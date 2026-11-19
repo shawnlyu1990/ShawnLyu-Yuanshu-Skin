@@ -66,7 +66,8 @@ local standardButtonShadowColor = {
 
 // 系统按键（如回车、删除等）背景颜色
 local systemButtonBackgroundColor = {
-  light: '#E6E6E6',
+  //light: '#e6e6e6',
+  light: '#f1f1f1',
   dark: '#D1D1D624',
 };
 
