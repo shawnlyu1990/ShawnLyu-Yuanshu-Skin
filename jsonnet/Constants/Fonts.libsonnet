@@ -10,8 +10,11 @@
   candidateStateButtonFontSize: 20,
 
   t9ButtonTextFontSize: 18,
+  t9LandscapeButtonTextFontSize: 14,
 
   standardButtonTextFontSize: 22.5,
+  alphabeticPortraitButtonTextFontSize: 18,
+  alphabeticLandscapeButtonTextFontSize: 16,
   standardButtonUppercasedTextFontSize: 21.5,
   standardButtonImageFontSize: 20,
 

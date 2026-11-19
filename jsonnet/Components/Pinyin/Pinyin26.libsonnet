@@ -1,3 +1,4 @@
+local fonts = import '../../Constants/Fonts.libsonnet';
 local buttons = import '../../Buttons/Layout26.libsonnet';
 local commonButtons = import '../../Buttons/Common.libsonnet';
 local toolbarParams = import '../../Buttons/Toolbar.libsonnet';
@@ -112,6 +113,10 @@ local getAlphabeticButtonSize(name) =
 
 local newKeyLayout(isDark=false, isPortrait=true, keyboardType=KeyboardType.Chinese) =
   local isAlphabetic = keyboardType == KeyboardType.English;
+  local alphabeticButtonTextFontSize = if isPortrait then
+    fonts.alphabeticPortraitButtonTextFontSize
+  else
+    fonts.alphabeticLandscapeButtonTextFontSize;
   {
     keyboardHeight: if isPortrait then commonButtons.keyboardHeight.portrait else commonButtons.keyboardHeight.landscape,
     keyboardStyle: utils.newBackgroundStyle(style=basicStyle.keyboardBackgroundStyleName),
@@ -126,9 +131,13 @@ local newKeyLayout(isDark=false, isPortrait=true, keyboardType=KeyboardType.Chin
         isDark,
         getAlphabeticButtonSize(button.name) +
         utils.processButtonParams(isAlphabetic, button.params) + basicStyle.hintStyleSize + basicStyle.textCenterWhenShowSwipeText +
+        { fontSize: alphabeticButtonTextFontSize } +
         (
           if keyboardType != KeyboardType.English && settings.uppercaseForChinese then
-            basicStyle.newAlphabeticButtonUppercaseForegroundStyle(isDark, button.params) + basicStyle.getKeyboardActionText(button.params.uppercased)
+            basicStyle.newAlphabeticButtonUppercaseForegroundStyle(
+              isDark,
+              button.params + { fontSize: alphabeticButtonTextFontSize }
+            ) + basicStyle.getKeyboardActionText(button.params.uppercased)
           else {}
         )),
       buttons.letterButtons,

@@ -174,7 +174,10 @@ local newKeyLayout(isDark=false, isPortrait=false, extraParams={}) =
         button.name,
         isDark,
         basicStyle.textCenterWhenShowSwipeText + {
-          fontSize: fonts.t9ButtonTextFontSize,
+          fontSize: if isPortrait then
+            fonts.t9ButtonTextFontSize
+          else
+            fonts.t9LandscapeButtonTextFontSize,
         } + button.params + (
           if settings.uppercaseForChinese then
             { text: std.asciiUpper(button.params.text) }
