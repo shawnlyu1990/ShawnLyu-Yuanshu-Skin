@@ -64,7 +64,7 @@
   # bottom       ⬇️正下方
   # bottomRight  ↘️右下角
   swipeUpTextCenter: 'top',
-  swipeDownTextCenter: 'hide',
+  swipeDownTextCenter: 'bottom',
 
 
   # toolbar 按钮配置
