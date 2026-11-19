@@ -367,12 +367,12 @@ local newToolbarButtonForegroundStyle(isDark=false, params={}) =
     {};
 
 local toolbarSlideButtonsName = 'toolbarSlideButtons';
-local newToolbarSlideButtons(buttons, slideButtonsMaxCount, isDark=false) =
+local newToolbarSlideButtons(buttons, slideButtonsMaxCount, isDark=false, extraFixedButtons=0) =
   assert std.length(buttons) > slideButtonsMaxCount : '滑动按钮数量必须大于 slideButtonsMaxCount';
   {
     [toolbarSlideButtonsName]: {
       type: 'horizontalSymbols',
-      size: { width: '%d/%d' % [slideButtonsMaxCount, slideButtonsMaxCount + 2] },
+      size: { width: '%d/%d' % [slideButtonsMaxCount, slideButtonsMaxCount + 2 + extraFixedButtons] },
       maxColumns: slideButtonsMaxCount,
       contentRightToLeft: false,
       // backgroundStyle: 'toolbarcollectionCellBackgroundStyle',
@@ -847,7 +847,7 @@ local newButton(name, type='alphabetic', isDark=false, params={}) =
   local _rimeOptionChangedNotificationName(name, rimeOptionName, value) =
     name + rimeOptionName + (if value then 'On' else 'Off') + 'Notification',
 
-  AddRimeOptionChangeEvent():
+  AddRimeOptionChangeEvent(newForegroundStyle=newAlphabeticButtonForegroundStyle):
     local hasRimeOptionParams = std.objectHas(root.params, 'whenRimeOptionChanged');
     if !hasRimeOptionParams then
       root
@@ -904,7 +904,7 @@ local newButton(name, type='alphabetic', isDark=false, params={}) =
             + utils.extractProperties(root[root.name], ['capsLockedStateForegroundStyle', 'uppercasedStateForegroundStyle']),
         }
         + {
-          [_rimeOptionChangedForegroundStyleName(root.name, rimeOptionName, rimeOptionValue)]: newAlphabeticButtonForegroundStyle(root.isDark, root.params, rimeOptionParams),
+          [_rimeOptionChangedForegroundStyleName(root.name, rimeOptionName, rimeOptionValue)]: newForegroundStyle(root.isDark, root.params, rimeOptionParams),
         }
         + {
           [if std.objectHas(rimeOptionParams, 'swipeUp') && root.showSwipeUpText then generateSwipeForegroundStyleName(root.name, 'Up', rimeOptionStr)]: newAlphabeticButtonAlternativeForegroundStyle(root.isDark, { center: swipeUpTextCenter }, rimeOptionParams.swipeUp),
@@ -1036,7 +1036,9 @@ local newToolbarButton(name, isDark=false, params={}) =
   local button = newButton(name, 'system', isDark, params)
     .AddForegroundStyle(newToolbarButtonForegroundStyle)
     .AddPropertiesInParams()
-    .AddRimeOptionChangeEvent();
+    .AddRimeOptionChangeEvent(
+      function(isDark, baseParams, eventParams) newToolbarButtonForegroundStyle(isDark, baseParams + eventParams)
+    );
   button.GetButton() + button.reference;
 
 local newAlphabeticButton(name, isDark=false, params={}, needHint=true, swipeTextFollowSetting=true) =

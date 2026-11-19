@@ -120,7 +120,13 @@ local settings = import '../Settings.libsonnet';
       name: 'toolbarTraditionalButton',
       params: {
         action: { rimeOption: 'traditionalization' },
-        text: '简繁',
+        text: '繁',
+        fontSize: 22, // 中文文字会缩放为 20，与工具栏图标大小一致
+        whenRimeOptionChanged: {
+          optionName: 'traditionalization',
+          optionValue: true,
+          text: '简',
+        },
       },
     },
     toolbarSchemaSelectorButton: {

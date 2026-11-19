@@ -232,12 +232,12 @@ local toolbarButtonNames = local buttons = keyboardParams.toolbarButton;
 local needSlideToolbar(slideButtons, slideButtonsMaxCount) =
   std.length(slideButtons) > slideButtonsMaxCount;
 
-local toolbarKeyboardLayout(slideButtons, slideButtonsMaxCount) = [
+local toolbarKeyboardLayout(slideButtons, slideButtonsMaxCount, pinnedButton=null) = [
   {
     HStack: {
       subviews: [
         { Cell: keyboardParams.toolbarButton.toolbarMenuButton.name, },
-      ] + (
+      ] + (if pinnedButton != null then [{ Cell: pinnedButton.name }] else []) + (
         if needSlideToolbar(slideButtons, slideButtonsMaxCount) then
           [{ Cell: basicStyle.toolbarSlideButtonsName, }]
         else
@@ -251,9 +251,9 @@ local toolbarKeyboardLayout(slideButtons, slideButtonsMaxCount) = [
 ];
 
 
-local newSlideAreaButtons(slideButtons, slideButtonsMaxCount, isDark, keyboardName) =
+local newSlideAreaButtons(slideButtons, slideButtonsMaxCount, isDark, keyboardName, extraFixedButtons=0) =
   if needSlideToolbar(slideButtons, slideButtonsMaxCount) then
-    basicStyle.newToolbarSlideButtons(slideButtons, slideButtonsMaxCount, isDark)
+    basicStyle.newToolbarSlideButtons(slideButtons, slideButtonsMaxCount, isDark, extraFixedButtons)
   else
     std.foldl(
       function(acc, button) acc +
@@ -279,7 +279,7 @@ local newButtons(isDark=false) =
   );
 
 local newToolbar(isDark=false, isPortrait=false, keyboardName, params={}) =
-  local slideButtons =
+  local buttons =
   [
     local btn = keyboardParams.toolbarButton[toolbarButtonNames[buttonCode - 1]];
     std.mergePatch(btn, { params: std.get(btn.params, 'On'+utils.capitalize(keyboardName), {})})
@@ -288,13 +288,26 @@ local newToolbar(isDark=false, isPortrait=false, keyboardName, params={}) =
   ];
   local slideButtonsMaxCount =
     if isPortrait then settings.toolbarSlideButtonsMaxCount.portrait else settings.toolbarSlideButtonsMaxCount.landscape;
+  local pinnedButtons = [
+    button for button in buttons
+    if button.name == keyboardParams.toolbarButton.toolbarTraditionalButton.name
+  ];
+  local pinnedButton =
+    if needSlideToolbar(buttons, slideButtonsMaxCount) && std.length(pinnedButtons) > 0 then pinnedButtons[0]
+    else null;
+  local slideButtons = [
+    button for button in buttons
+    if pinnedButton == null || button.name != pinnedButton.name
+  ];
+  local availableSlideCount =
+    if pinnedButton != null then std.max(1, slideButtonsMaxCount - 1) else slideButtonsMaxCount;
   {
     toolbarHeight: keyboardParams.toolbar.height,
     toolbarStyle: {
              insets: keyboardParams.toolbar.insets,
            }
            + utils.newBackgroundStyle(style=toolbarBackgroundStyleName),
-    toolbarLayout: toolbarKeyboardLayout(slideButtons, slideButtonsMaxCount),
+    toolbarLayout: toolbarKeyboardLayout(slideButtons, availableSlideCount, pinnedButton),
     horizontalCandidatesStyle:
       utils.extractProperties(keyboardParams.horizontalCandidateStyle + params, ['insets'])
       {
@@ -315,7 +328,8 @@ local newToolbar(isDark=false, isPortrait=false, keyboardName, params={}) =
     ],
   }
   + newButtons(isDark)
-  + newSlideAreaButtons(slideButtons, slideButtonsMaxCount, isDark, keyboardName)
+  + (if pinnedButton != null then basicStyle.newToolbarButton(pinnedButton.name, isDark, pinnedButton.params) else {})
+  + newSlideAreaButtons(slideButtons, availableSlideCount, isDark, keyboardName, if pinnedButton != null then 1 else 0)
   + newHorizontalCandidatesCollectionView(isDark)
   + newExpandButton(isDark)
   + newVerticalCandidateCollectionStyle(isDark)
