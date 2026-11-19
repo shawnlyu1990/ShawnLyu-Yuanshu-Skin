@@ -14,7 +14,7 @@
   # 18 : 18键布局
   # bopomofo : 注音佈局
   # sigma : 西戈拼音布局
-  keyboardLayout: '26',
+  keyboardLayout: '9',
 
 
   # 数字键盘布局选择，可选值如下：

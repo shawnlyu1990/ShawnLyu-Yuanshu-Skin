@@ -122,6 +122,7 @@ local settings = import '../Settings.libsonnet';
         action: { rimeOption: 'traditionalization' },
         text: '繁',
         fontSize: 22, // 中文文字会缩放为 20，与工具栏图标大小一致
+        center: { y: 0.45 },
         whenRimeOptionChanged: {
           optionName: 'traditionalization',
           optionValue: true,
