@@ -124,6 +124,29 @@ local settings = import '../Settings.libsonnet';
         text: '切换',
       },
     },
+    toolbarLayoutSwitchButton: {
+      name: 'toolbarLayoutSwitchButton',
+      params: {
+        action: {
+          combine: [
+            { keyboardType: if settings.keyboardLayout == '9' then 'pinyin' else 'pinyin9' },
+            { switchRimeSchema: settings.layoutSwitchSchema9 },
+          ],
+        },
+        systemImageName: 'square.grid.3x3',
+        text: '九键',
+        OnPinyin9: {
+          action: {
+            combine: [
+              { keyboardType: if settings.keyboardLayout == '9' then 'pinyin26' else 'pinyin' },
+              { switchRimeSchema: settings.layoutSwitchSchema26 },
+            ],
+          },
+          systemImageName: 'keyboard',
+          text: '全键',
+        },
+      },
+    },
 
     toolbarHamster3Button: {
       name: 'toolbarHamster3Button',
@@ -253,7 +276,7 @@ local settings = import '../Settings.libsonnet';
         text: '数字',
 
         OnNumeric: {
-          action: 'returnPrimaryKeyboard',
+          action: if settings.layoutSwitchEnabled then 'returnLastKeyboard' else 'returnPrimaryKeyboard',
           systemImageName: 'arrow.backward',
           text: '返回',
         },
@@ -271,7 +294,7 @@ local settings = import '../Settings.libsonnet';
         text: '符号',
 
         OnSymbolic: {
-          action: 'returnPrimaryKeyboard',
+          action: if settings.layoutSwitchEnabled then 'returnLastKeyboard' else 'returnPrimaryKeyboard',
           systemImageName: 'arrow.backward',
           text: '返回',
         },
@@ -289,7 +312,7 @@ local settings = import '../Settings.libsonnet';
         text: '表情',
 
         OnEmojis: {
-          action: 'returnPrimaryKeyboard',
+          action: if settings.layoutSwitchEnabled then 'returnLastKeyboard' else 'returnPrimaryKeyboard',
           systemImageName: 'arrow.backward',
           text: '返回',
         }

@@ -225,6 +225,7 @@ local toolbarButtonNames = local buttons = keyboardParams.toolbarButton;
   buttons.toolbarRedoButton.name, // 重做
   buttons.toolbarMoveCursorLeftButton.name, // 光标左移
   buttons.toolbarMoveCursorRightButton.name, // 光标右移
+  buttons.toolbarLayoutSwitchButton.name, // 9键/26键与方案切换
 ];
 
 local needSlideToolbar(slideButtons, slideButtonsMaxCount) =
@@ -282,6 +283,7 @@ local newToolbar(isDark=false, isPortrait=false, keyboardName, params={}) =
     local btn = keyboardParams.toolbarButton[toolbarButtonNames[buttonCode - 1]];
     std.mergePatch(btn, { params: std.get(btn.params, 'On'+utils.capitalize(keyboardName), {})})
     for buttonCode in settings.toolbarSlideButtons
+    if buttonCode != 28 || (settings.layoutSwitchEnabled && std.member(['pinyin9', 'pinyin26'], keyboardName))
   ];
   local slideButtonsMaxCount =
     if isPortrait then settings.toolbarSlideButtonsMaxCount.portrait else settings.toolbarSlideButtonsMaxCount.landscape;

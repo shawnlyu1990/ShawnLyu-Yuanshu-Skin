@@ -84,9 +84,18 @@
   # 20-全选  21-复制  22-剪切
   # 23-粘贴  24-撤销  25-重做
   # 26-左移  27-右移
+  # 28-切换9键和26键（仅用于 9、26、26b 布局，同时切换 Rime 方案）
   #
   # 将上述代号填入下面的数组即可
-  toolbarSlideButtons: [ 8, 17, 1, 2, 3, 10, 12 ],
+  toolbarSlideButtons: [ 28, 8, 17, 1, 2, 3, 10, 12 ],
+
+  # 切换按钮需要两个方案均已启用并部署，方案 ID 可按实际情况修改。
+  layoutSwitchSchema9: 't9',
+  layoutSwitchSchema26: 'rime_ice',
+
+  layoutSwitchEnabled:
+    std.member([ '9', '26', '26b' ], self.keyboardLayout)
+    && std.member(self.toolbarSlideButtons, 28),
 
   # 滑动按钮区域占几个按键宽度
   toolbarSlideButtonsMaxCount: {

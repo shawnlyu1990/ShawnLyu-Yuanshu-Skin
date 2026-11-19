@@ -1,4 +1,6 @@
 local pinyinComponent = import 'Components/Pinyin.libsonnet';
+local pinyin9Component = import 'Components/Pinyin/Pinyin9.libsonnet';
+local pinyin26Component = import 'Components/Pinyin/Pinyin26.libsonnet';
 local temp26Component = import 'Components/Pinyin/PinyinTemp26.libsonnet';
 local alphabeticComponent = import 'Components/Alphabetic.libsonnet';
 local numericComponent = import 'Components/Numeric.libsonnet';
@@ -13,6 +15,8 @@ local nameToComponent = {
   alphabetic: alphabeticComponent,
   numeric: numericComponent,
   panel: panelComponent,
+  [if settings.layoutSwitchEnabled && settings.keyboardLayout != '9' then 'pinyin9']: pinyin9Component,
+  [if settings.layoutSwitchEnabled && settings.keyboardLayout == '9' then 'pinyin26']: pinyin26Component,
   [if settings.symbolicLayout != 'default' then 'symbolic']: symbolicComponent,
 
    // 这几个组件只有在特定条件下才会被使用

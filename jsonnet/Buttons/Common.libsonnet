@@ -153,7 +153,7 @@ local settings = import '../Settings.libsonnet';
   gotoPrimaryKeyboardButton: {
     name: 'gotoPrimaryKeyboardButton',
     params: {
-      action: 'returnPrimaryKeyboard',
+      action: if settings.layoutSwitchEnabled then 'returnLastKeyboard' else 'returnPrimaryKeyboard',
       systemImageName: 'arrow.backward',
       text: '返回',
     },
@@ -229,7 +229,7 @@ local settings = import '../Settings.libsonnet';
   pinyinButton: {
     name: 'pinyinButton',
     params: {
-      action: { keyboardType: 'pinyin' },
+      action: if settings.layoutSwitchEnabled then 'returnLastKeyboard' else { keyboardType: 'pinyin' },
       assetImageName: 'englishState2',
     },
   },

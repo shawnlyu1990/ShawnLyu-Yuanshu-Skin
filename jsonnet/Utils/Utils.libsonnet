@@ -1,3 +1,5 @@
+local settings = import '../Settings.libsonnet';
+
 // 提取对象中指定的属性
 local extractProperty(obj, key) =
   if std.objectHas(obj, key) then
@@ -238,7 +240,7 @@ local calcMainTextCenter(swipeUpTextCenter, swipeDownTextCenter) =
 
 // 某些布局的数字键被用于打字，所以数字需要用 action.symbol 的方式直接上屏
 local numericActionNeedSymbol(layout) =
-  std.member(['9', 'bopomofo'],layout);
+  std.member(['9', 'bopomofo'],layout) || settings.layoutSwitchEnabled;
 
 local normalizeCenter(center) = {
   x: std.get(center, 'x', 0.5),
