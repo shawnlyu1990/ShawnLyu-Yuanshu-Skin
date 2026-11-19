@@ -7,14 +7,12 @@ local numericComponent = import 'Components/Numeric.libsonnet';
 local numericRowEnComponent = import 'Components/Numeric/NumericRowEn.libsonnet';
 local symbolicComponent = import 'Components/Symbolic.libsonnet';
 local symbolicRowEnComponent = import 'Components/Symbolic/SymbolicRowEn.libsonnet';
-local panelComponent = import 'Components/Panel.libsonnet';
 local settings = import 'Settings.libsonnet';
 
 local nameToComponent = {
   pinyin: pinyinComponent,
   alphabetic: alphabeticComponent,
   numeric: numericComponent,
-  panel: panelComponent,
   [if settings.layoutSwitchEnabled && settings.keyboardLayout != '9' then 'pinyin9']: pinyin9Component,
   [if settings.layoutSwitchEnabled && settings.keyboardLayout == '9' then 'pinyin26']: pinyin26Component,
   [if settings.symbolicLayout != 'default' then 'symbolic']: symbolicComponent,

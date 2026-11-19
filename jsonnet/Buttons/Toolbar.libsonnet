@@ -61,7 +61,7 @@ local settings = import '../Settings.libsonnet';
     toolbarMenuButton: {
       name: 'toolbarMenuButton',
       params: {
-        action: { floatKeyboardType: 'panel', },
+        action: { shortcut: '#keyboardMenu' },
         systemImageName: 'hexagon.righthalf.filled',
         // systemImageName: 'swirl.circle.righthalf.filled', // 需要 iOS 17+
         text: '面板',
