@@ -116,6 +116,13 @@ local settings = import '../Settings.libsonnet';
         text: '开关',
       },
     },
+    toolbarTraditionalButton: {
+      name: 'toolbarTraditionalButton',
+      params: {
+        action: { rimeOption: 'traditionalization' },
+        text: '简繁',
+      },
+    },
     toolbarSchemaSelectorButton: {
       name: 'toolbarSchemaSelectorButton',
       params: {

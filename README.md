@@ -1,47 +1,60 @@
-
 本键盘皮肤在「空山素影」皮肤的基础上做了以下自定义修改。
 
-## 修改 1: 9 键 / 26 键切换，切换键盘的同时切换输入方案
+## 修改 1：切换 9 键 / 26 键布局和输入方案
 
-9 键键盘对应「中文九键」输入方案。
-26 键键盘对应「雾凇拼音」输入方案。
+通过中文键盘工具栏上的切换按钮，可以同时切换键盘布局和输入方案：
 
-通过工具栏上的键盘切换按钮完成切换。
+- 9 键布局对应「中文九键」方案。
+- 26 键布局对应「雾凇拼音」方案。
 
-- 在元书的方案列表中启用并部署中文九键和雾凇拼音。默认方案 ID 分别为 `t9` 和 `rime_ice`；如果实际 ID 不同，可在 `jsonnet/Settings.libsonnet` 中修改 `layoutSwitchSchema9` 和 `layoutSwitchSchema26`。
-- `keyboardLayout` 设为 `9`、`26` 或 `26b`，且 `toolbarSlideButtons` 包含 `28` 时，中文键盘的工具栏显示切换按钮。修改设置后需重新编译皮肤。
-- 切换前建议先完成当前输入；切换过程中未上屏内容的处理取决于元书和 Rime。
-- 此功能使用元书的组合动作，需要支持 `combine` 的元书版本（官方文档注明 TestFlight 349 及以上）。英文和自定义数字、符号键盘的返回按钮使用“返回上一个键盘”。
-- 元书内置符号或表情键盘可能自动返回默认中文键盘；重新打开键盘或通过其他入口单独切换方案时，布局也不一定自动跟随。若布局与方案不匹配，请用工具栏按钮重新切换，并检查空格键上的方案名称。本功能的返回和恢复行为需要在实际设备上验证。
+> [!caution]
+>
+> 使用前请注意：
+>
+> - 在元书的方案列表中启用并部署中文九键和雾凇拼音。默认方案 ID 分别为 `t9` 和 `rime_ice`；如果实际 ID 不同，可在 `./jsonnet/Settings.libsonnet` 中修改 `layoutSwitchSchema9` 和 `layoutSwitchSchema26`。
+> - 当 `keyboardLayout` 设为 `9`、`26` 或 `26b`，且 `toolbarSlideButtons` 包含 `28` 时，中文键盘工具栏会显示切换按钮。修改设置后需要重新编译皮肤。
+> - 切换前建议先完成当前输入；未上屏内容的处理取决于元书和 Rime。
+> - 此功能使用元书的组合动作，需要支持 `combine` 的元书版本（官方文档注明 TestFlight 349 及以上）。英文和自定义数字、符号键盘的返回按钮使用「返回上一个键盘」。
+> - 元书内置符号或表情键盘可能自动返回默认中文键盘；重新打开键盘或通过其他入口单独切换方案时，布局也不一定自动跟随。若布局与方案不匹配，可用工具栏按钮重新切换，并检查空格键上的方案名称。返回和恢复行为仍需在实际设备上验证。
+
+## 修改 2：工具栏简繁切换
+
+点击工具栏上的「简繁」按钮，可切换简体和繁体输入。此功能直接切换 Rime 的 `traditionalization` 选项，需要当前方案支持该选项，并使用元书商店版 1.8.0 或 TestFlight 504 及以上版本。
+
+按钮代号为 `29`，可在 `toolbarSlideButtons` 中调整位置或移除；修改后需重新编译皮肤。若按钮没有显示，请检查元书是否启用了自定义工具栏。
+
+## 在 iPhone 上安装
+
+1. 下载并解压本仓库的源码。
+2. 在 iPhone 的「文件」App 中，进入「我的 iPhone」→「元书输入法」→ `Skins`，新建一个皮肤文件夹，例如「空山素影」。
+3. 将源码文件复制到该文件夹中，保留 `jsonnet`、`light` 和 `dark` 目录及其层级。`light` 和 `dark` 可以暂时为空，编译时会生成配置文件。
+4. 打开元书输入法的「键盘皮肤」页面，长按「空山素影」，选择「运行 main.jsonnet」进行编译。完成后选择该皮肤，并在输入框中重新唤起键盘。
+
+首次安装时，无生成配置的源码目录能否直接出现在皮肤列表中尚未实机验证。如果列表中没有该皮肤，可以先按下方说明在电脑上编译，再将生成的文件连同源码一起复制到手机。
 
 ## 自定义皮肤调整说明
 
-- 皮肤的基本设置`jsonnet/Settings.libsonnet`
-  + 浮动键盘中的“微调”可以直接打开该文件进行编辑。
-  + 修改后保存，重新编译皮肤即可生效。
+- 基本设置：在浮动面板中选择「微调」，可打开 [Settings.libsonnet](./jsonnet/Settings.libsonnet) 进行编辑。
+- 按键功能：在浮动面板中选择「按键」，可打开 [Buttons/README.md](./jsonnet/Buttons/README.md)，查看各按键定义所在的文件，再打开相应文件进行编辑。
 
-- 键盘按键功能设置`jsonnet/Buttons/`
-  + 浮动键盘中的“按键”会打开`jsonnet/Buttons/`文件夹下的 README.md，方便查看各按键在哪个文件
-  + 退出 README.md 后再打开同目录下的具体按键文件进行编辑。
-  + 修改后保存，重新编译皮肤即可生效。
+修改后保存文件，重新编译皮肤即可生效。
 
-## 手机端编译
+## 在电脑上编译
 
-长按皮肤，选择「运行 main.jsonnet」
-
-## PC 端编译
-
-PC 端编译时需要安装 `jsonnet` 等命令行工具。
+安装 `jsonnet` 命令行工具，在仓库根目录运行：
 
 ```shell
-# windows
+# Windows
 jsonnet -S -m . --tla-code debug=true .\jsonnet\main.jsonnet
 
-# linux/macOS
+# Linux / macOS
 jsonnet -S -m . --tla-code debug=true ./jsonnet/main.jsonnet
 ```
 
-## 原皮肤 Github 仓库地址
+编译会生成 `config.yaml` 以及 `light`、`dark` 目录下的 YAML 文件。
+
+## 原皮肤 GitHub 仓库
+
 - [空山素影](https://github.com/luozikuan/kongshan-suying)
 - [最新版本发布地址](https://github.com/luozikuan/kongshan-suying/releases/latest)
 - [配套测试方案](https://github.com/luozikuan/rime-tailor)
