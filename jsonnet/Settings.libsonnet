@@ -89,7 +89,7 @@
   # 29-简繁切换
   #
   # 将上述代号填入下面的数组即可
-  toolbarSlideButtons: [ 28, 8, 17, 29, 1, 2, 3, 10, 12 ],
+  toolbarSlideButtons: [ 29, 28, 8, 17, 1, 2, 3 ],
 
   # 切换按钮需要两个方案均已启用并部署，方案 ID 可按实际情况修改。
   layoutSwitchSchema9: 't9',
