@@ -232,12 +232,12 @@ local toolbarButtonNames = local buttons = keyboardParams.toolbarButton;
 local needSlideToolbar(slideButtons, slideButtonsMaxCount) =
   std.length(slideButtons) > slideButtonsMaxCount;
 
-local toolbarKeyboardLayout(slideButtons, slideButtonsMaxCount, pinnedButton=null) = [
+local toolbarKeyboardLayout(slideButtons, slideButtonsMaxCount, pinnedButtons=[]) = [
   {
     HStack: {
       subviews: [
         { Cell: keyboardParams.toolbarButton.toolbarMenuButton.name, },
-      ] + (if pinnedButton != null then [{ Cell: pinnedButton.name }] else []) + (
+      ] + [{ Cell: button.name } for button in pinnedButtons] + (
         if needSlideToolbar(slideButtons, slideButtonsMaxCount) then
           [{ Cell: basicStyle.toolbarSlideButtonsName, }]
         else
@@ -278,36 +278,43 @@ local newButtons(isDark=false) =
     keyboardParams.toolbarButton.toolbarDismissButton.params,
   );
 
-local newToolbar(isDark=false, isPortrait=false, keyboardName, params={}) =
+local newToolbar(isDark=false, isPortrait=false, keyboardName, params={}, hideTraditionalButton=false) =
   local buttons =
   [
     local btn = keyboardParams.toolbarButton[toolbarButtonNames[buttonCode - 1]];
     std.mergePatch(btn, { params: std.get(btn.params, 'On'+utils.capitalize(keyboardName), {})})
     for buttonCode in settings.toolbarSlideButtons
     if buttonCode != 28 || (settings.layoutSwitchEnabled && std.member(['pinyin9', 'pinyin26'], keyboardName))
+    if buttonCode != 29 || !hideTraditionalButton
   ];
   local slideButtonsMaxCount =
     if isPortrait then settings.toolbarSlideButtonsMaxCount.portrait else settings.toolbarSlideButtonsMaxCount.landscape;
-  local pinnedButtons = [
+  local layoutSwitchButtons = [
+    button for button in buttons
+    if button.name == keyboardParams.toolbarButton.toolbarLayoutSwitchButton.name
+  ];
+  local traditionalButtons = [
     button for button in buttons
     if button.name == keyboardParams.toolbarButton.toolbarTraditionalButton.name
   ];
-  local pinnedButton =
-    if needSlideToolbar(buttons, slideButtonsMaxCount) && std.length(pinnedButtons) > 0 then pinnedButtons[0]
-    else null;
+  local pinnedButtons =
+    (if std.length(layoutSwitchButtons) > 0 then [layoutSwitchButtons[0]] else []) +
+    (if std.length(traditionalButtons) > 0 &&
+        (std.length(layoutSwitchButtons) > 0 || needSlideToolbar(buttons, slideButtonsMaxCount))
+     then [traditionalButtons[0]] else []);
   local slideButtons = [
     button for button in buttons
-    if pinnedButton == null || button.name != pinnedButton.name
+    if !std.member([pinned.name for pinned in pinnedButtons], button.name)
   ];
   local availableSlideCount =
-    if pinnedButton != null then std.max(1, slideButtonsMaxCount - 1) else slideButtonsMaxCount;
+    std.max(if std.length(slideButtons) > 0 then 1 else 0, slideButtonsMaxCount - std.length(pinnedButtons));
   {
     toolbarHeight: keyboardParams.toolbar.height,
     toolbarStyle: {
              insets: keyboardParams.toolbar.insets,
            }
            + utils.newBackgroundStyle(style=toolbarBackgroundStyleName),
-    toolbarLayout: toolbarKeyboardLayout(slideButtons, availableSlideCount, pinnedButton),
+    toolbarLayout: toolbarKeyboardLayout(slideButtons, availableSlideCount, pinnedButtons),
     horizontalCandidatesStyle:
       utils.extractProperties(keyboardParams.horizontalCandidateStyle + params, ['insets'])
       {
@@ -328,8 +335,12 @@ local newToolbar(isDark=false, isPortrait=false, keyboardName, params={}) =
     ],
   }
   + newButtons(isDark)
-  + (if pinnedButton != null then basicStyle.newToolbarButton(pinnedButton.name, isDark, pinnedButton.params) else {})
-  + newSlideAreaButtons(slideButtons, availableSlideCount, isDark, keyboardName, if pinnedButton != null then 1 else 0)
+  + std.foldl(
+      function(acc, button) acc + basicStyle.newToolbarButton(button.name, isDark, button.params),
+      pinnedButtons,
+      {}
+    )
+  + newSlideAreaButtons(slideButtons, availableSlideCount, isDark, keyboardName, std.length(pinnedButtons))
   + newHorizontalCandidatesCollectionView(isDark)
   + newExpandButton(isDark)
   + newVerticalCandidateCollectionStyle(isDark)

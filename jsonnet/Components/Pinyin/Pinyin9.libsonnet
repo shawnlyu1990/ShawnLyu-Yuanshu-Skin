@@ -7,6 +7,9 @@ local preedit = import '../Preedit.libsonnet';
 local toolbar = import '../Toolbar.libsonnet';
 local utils = import '../../Utils/Utils.libsonnet';
 
+local t9ButtonTextCenter = { x: 0.35, y: 0.35 };
+local t9SwipeUpTextCenter = { x: 0.8, y: 0.35 };
+local t9SwipeHintTextFontSize = fonts.alternativeTextFontSize - 1;
 
 // 窄 VStack 宽度样式
 local narrowVStackStyle = {
@@ -178,12 +181,14 @@ local newKeyLayout(isDark=false, isPortrait=false, extraParams={}) =
             fonts.t9ButtonTextFontSize
           else
             fonts.t9LandscapeButtonTextFontSize,
-        } + button.params + (
+        } + button.params + { center: t9ButtonTextCenter } + (
           if settings.uppercaseForChinese then
             { text: std.asciiUpper(button.params.text) }
           else {}
         ),
         needHint=false,
+        swipeUpTextCenterOverride=t9SwipeUpTextCenter,
+        swipeHintTextFontSize=t9SwipeHintTextFontSize,
       ),
     pinyin9Buttons.t9Buttons,
     {})
@@ -208,8 +213,14 @@ local newKeyLayout(isDark=false, isPortrait=false, extraParams={}) =
   + basicStyle.newAlphabeticButton(
     pinyin9Buttons.spaceButton.name,
     isDark,
-    basicStyle.newSpaceButtonForegroundStyle(pinyin9Buttons.spaceButton.params, '$rimeSchemaName', isDark),
+    basicStyle.newSpaceButtonForegroundStyle(
+      pinyin9Buttons.spaceButton.params + { systemImageName: null },
+      '$rimeSchemaName',
+      isDark,
+    ),
     needHint=false,
+    swipeUpTextCenterOverride=t9SwipeUpTextCenter,
+    swipeHintTextFontSize=t9SwipeHintTextFontSize,
   )
 
   + basicStyle.newSystemButton(

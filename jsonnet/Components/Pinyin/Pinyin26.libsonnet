@@ -8,9 +8,15 @@ local preedit = import '../Preedit.libsonnet';
 local toolbar = import '../Toolbar.libsonnet';
 local utils = import '../../Utils/Utils.libsonnet';
 
+local swipeUpTextCenter = { x: 0.25, y: 0.25 };
+local swipeDownTextCenter = { x: 0.25, y: 0.75 };
+local swipeHintTextFontSize = fonts.alternativeTextFontSize - 1;
+
 local portraitNormalButtonSize = {
   size: { width: '112.5/1125' },
 };
+
+local periodButtonName = 'periodButton';
 
 // 枚举键盘类型
 local KeyboardType = {
@@ -81,6 +87,9 @@ local keyboardLayout(keyboardType) = {
           { Cell: commonButtons.numericButton.name },
           { Cell: commonButtons.commaButton.name },
           { Cell: commonButtons.spaceButton.name },
+        ] + (if keyboardType != KeyboardType.Temp26Key then [
+          { Cell: periodButtonName },
+        ] else []) + [
           { Cell: getSwitchButton(keyboardType).name },
           { Cell: commonButtons.enterButton.name },
         ],
@@ -130,7 +139,8 @@ local newKeyLayout(isDark=false, isPortrait=true, keyboardType=KeyboardType.Chin
         button.name,
         isDark,
         getAlphabeticButtonSize(button.name) +
-        utils.processButtonParams(isAlphabetic, button.params) + basicStyle.hintStyleSize + basicStyle.textCenterWhenShowSwipeText +
+        utils.processButtonParams(isAlphabetic, button.params) + basicStyle.hintStyleSize +
+        { center: { x: 0.5, y: 0.5 } } +
         { fontSize: alphabeticButtonTextFontSize } +
         (
           if keyboardType != KeyboardType.English && settings.uppercaseForChinese then
@@ -139,7 +149,11 @@ local newKeyLayout(isDark=false, isPortrait=true, keyboardType=KeyboardType.Chin
               button.params + { fontSize: alphabeticButtonTextFontSize }
             ) + basicStyle.getKeyboardActionText(button.params.uppercased)
           else {}
-        )),
+        ),
+        swipeUpTextCenterOverride=swipeUpTextCenter,
+        swipeDownTextCenterOverride=swipeDownTextCenter,
+        swipeHintTextFontSize=swipeHintTextFontSize,
+      ),
       buttons.letterButtons,
       {})
 
@@ -189,14 +203,23 @@ local newKeyLayout(isDark=false, isPortrait=true, keyboardType=KeyboardType.Chin
   + basicStyle.newAlphabeticButton(
     commonButtons.commaButton.name,
     isDark,
-    portraitNormalButtonSize + utils.processButtonParams(isAlphabetic, commonButtons.commaButton.params) + basicStyle.hintStyleSize,
+    portraitNormalButtonSize +
+    (if keyboardType == KeyboardType.Temp26Key then
+      utils.processButtonParams(isAlphabetic, commonButtons.commaButton.params)
+    else
+      utils.excludeProperties(utils.processButtonParams(isAlphabetic, commonButtons.commaButton.params), ['swipeUp'])) +
+    basicStyle.hintStyleSize,
     swipeTextFollowSetting=false,
+    swipeUpTextCenterOverride=swipeUpTextCenter,
+    swipeDownTextCenterOverride=swipeDownTextCenter,
+    swipeHintTextFontSize=swipeHintTextFontSize,
   )
   + basicStyle.newAlphabeticButton(
     commonButtons.spaceButton.name,
     isDark,
     basicStyle.newSpaceButtonForegroundStyle(
-      utils.processButtonParams(isAlphabetic, commonButtons.spaceButton.params),
+      utils.processButtonParams(isAlphabetic, commonButtons.spaceButton.params) +
+      (if keyboardType == KeyboardType.Temp26Key then {} else { systemImageName: null }),
       if keyboardType == KeyboardType.English then
         'English'
       else if keyboardType == KeyboardType.Temp26Key then
@@ -206,6 +229,18 @@ local newKeyLayout(isDark=false, isPortrait=true, keyboardType=KeyboardType.Chin
       isDark
     ),
     needHint=false,
+  )
+  + (
+    if keyboardType != KeyboardType.Temp26Key then
+      basicStyle.newAlphabeticButton(
+        periodButtonName,
+        isDark,
+        portraitNormalButtonSize + {
+          action: { symbol: if isAlphabetic then '.' else '。' },
+        },
+        needHint=false,
+      )
+    else {}
   )
   + local switchButton = getSwitchButton(keyboardType);
     basicStyle.newSystemButton(
@@ -241,7 +276,8 @@ local newKeyLayout(isDark=false, isPortrait=true, keyboardType=KeyboardType.Chin
     + toolbar.new(isDark, isPortrait,
         if keyboardType == KeyboardType.Chinese then
           if settings.layoutSwitchEnabled then 'pinyin26' else 'pinyin'
-        else 'alphabetic')
+        else 'alphabetic',
+        hideTraditionalButton=keyboardType == KeyboardType.English)
     + basicStyle.newKeyboardBackgroundStyle(isDark)
     + basicStyle.newAlphabeticButtonBackgroundStyle(isDark, extraParams)
     + basicStyle.newSystemButtonBackgroundStyle(isDark, extraParams)

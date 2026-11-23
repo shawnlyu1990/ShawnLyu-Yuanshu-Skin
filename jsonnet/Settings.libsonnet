@@ -99,7 +99,7 @@
     std.member([ '9', '26', '26b' ], self.keyboardLayout)
     && std.member(self.toolbarSlideButtons, 28),
 
-  # 可配置按钮区域占几个按键宽度（简繁按钮固定时包含其宽度）
+  # 可配置按钮区域占几个按键宽度（包括固定的布局切换和简繁按钮）
   toolbarSlideButtonsMaxCount: {
     portrait: 5,   # 竖屏
     landscape: 8,  # 横屏

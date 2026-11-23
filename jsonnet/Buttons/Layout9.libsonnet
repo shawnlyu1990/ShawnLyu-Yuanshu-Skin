@@ -20,7 +20,11 @@ local commonButtons = import './Common.libsonnet';
     name: 't9OneButton',
     params: {
       action: { character: '1' },
-      swipeUp: { action: { symbol: '1' } },
+      #swipeUp: { action: { symbol: '1' } },
+      swipeUp: { text: '1' },
+      longPress: [
+        { action: { character: '1' }, selected: true },
+      ],
       text: '@/.',
 
       whenPreeditChanged: {
@@ -32,7 +36,17 @@ local commonButtons = import './Common.libsonnet';
     name: 't9TwoButton',
     params: {
       action: { character: '2' },
-      swipeUp: { action: { symbol: '2' } },
+      #swipeUp: { action: { symbol: '2' } },
+      swipeUp: { text: '2' },
+      longPress: [
+        { action: { character: 'a' } },
+        { action: { character: 'b' } },
+        { action: { character: 'c' } },
+        { action: { character: '2' }, selected: true },
+        { action: { character: 'A' } },
+        { action: { character: 'B' } },
+        { action: { character: 'C' } },
+      ],
       text: 'abc',
     },
   },
@@ -40,7 +54,17 @@ local commonButtons = import './Common.libsonnet';
     name: 't9ThreeButton',
     params: {
       action: { character: '3' },
-      swipeUp: { action: { symbol: '3' } },
+      #swipeUp: { action: { symbol: '3' } },
+      swipeUp: { text: '3' },
+      longPress: [
+        { action: { character: 'd' } },
+        { action: { character: 'e' } },
+        { action: { character: 'f' } },
+        { action: { character: '3' }, selected: true },
+        { action: { character: 'D' } },
+        { action: { character: 'E' } },
+        { action: { character: 'F' } },
+      ],
       text: 'def',
     },
   },
@@ -48,7 +72,17 @@ local commonButtons = import './Common.libsonnet';
     name: 't9FourButton',
     params: {
       action: { character: '4' },
-      swipeUp: { action: { symbol: '4' } },
+      #swipeUp: { action: { symbol: '4' } },
+      swipeUp: { text: '4' },
+      longPress: [
+        { action: { character: 'g' } },
+        { action: { character: 'h' } },
+        { action: { character: 'i' } },
+        { action: { character: '4' }, selected: true },
+        { action: { character: 'G' } },
+        { action: { character: 'H' } },
+        { action: { character: 'I' } },
+      ],
       text: 'ghi',
     },
   },
@@ -56,7 +90,17 @@ local commonButtons = import './Common.libsonnet';
     name: 't9FiveButton',
     params: {
       action: { character: '5' },
-      swipeUp: { action: { symbol: '5' } },
+      #swipeUp: { action: { symbol: '5' } },
+      swipeUp: { text: '5' },
+      longPress: [
+        { action: { character: 'j' } },
+        { action: { character: 'k' } },
+        { action: { character: 'l' } },
+        { action: { character: '5' }, selected: true },
+        { action: { character: 'J' } },
+        { action: { character: 'K' } },
+        { action: { character: 'L' } },
+      ],
       text: 'jkl',
     },
   },
@@ -64,7 +108,17 @@ local commonButtons = import './Common.libsonnet';
     name: 't9SixButton',
     params: {
       action: { character: '6' },
-      swipeUp: { action: { symbol: '6' } },
+      #swipeUp: { action: { symbol: '6' } },
+      swipeUp: { text: '6' },
+      longPress: [
+        { action: { character: 'm' } },
+        { action: { character: 'n' } },
+        { action: { character: 'o' } },
+        { action: { character: '6' }, selected: true },
+        { action: { character: 'M' } },
+        { action: { character: 'N' } },
+        { action: { character: 'O' } },
+      ],
       text: 'mno',
     },
   },
@@ -72,7 +126,19 @@ local commonButtons = import './Common.libsonnet';
     name: 't9SevenButton',
     params: {
       action: { character: '7' },
-      swipeUp: { action: { symbol: '7' } },
+      #swipeUp: { action: { symbol: '7' } },
+      swipeUp: { text: '7' },
+      longPress: [
+        { action: { character: 'p' } },
+        { action: { character: 'q' } },
+        { action: { character: 'r' } },
+        { action: { character: 's' } },
+        { action: { character: '7' }, selected: true },
+        { action: { character: 'P' } },
+        { action: { character: 'Q' } },
+        { action: { character: 'R' } },
+        { action: { character: 'S' } },
+      ],
       text: 'pqrs',
     },
   },
@@ -80,7 +146,17 @@ local commonButtons = import './Common.libsonnet';
     name: 't9EightButton',
     params: {
       action: { character: '8' },
-      swipeUp: { action: { symbol: '8' } },
+      #swipeUp: { action: { symbol: '8' } },
+      swipeUp: { text: '8' },
+      longPress: [
+        { action: { character: 't' } },
+        { action: { character: 'u' } },
+        { action: { character: 'v' } },
+        { action: { character: '8' }, selected: true },
+        { action: { character: 'T' } },
+        { action: { character: 'U' } },
+        { action: { character: 'V' } },
+      ],
       text: 'tuv',
     },
   },
@@ -88,7 +164,19 @@ local commonButtons = import './Common.libsonnet';
     name: 't9NineButton',
     params: {
       action: { character: '9' },
-      swipeUp: { action: { symbol: '9' } },
+      #swipeUp: { action: { symbol: '9' } },
+      swipeUp: { text: '9' },
+      longPress: [
+        { action: { character: 'w' } },
+        { action: { character: 'x' } },
+        { action: { character: 'y' } },
+        { action: { character: 'z' } },
+        { action: { character: '9' }, selected: true },
+        { action: { character: 'W' } },
+        { action: { character: 'X' } },
+        { action: { character: 'Y' } },
+        { action: { character: 'Z' } },
+      ],
       text: 'wxyz',
     },
   },
@@ -130,11 +218,15 @@ local commonButtons = import './Common.libsonnet';
     },
   },
 
-  // 空格，增加上划输入数字 0 功能
+  // 普通状态上滑只显示数字 0；预编辑时保留“次选上屏”动作
   spaceButton: {
     name: 'spaceButton',
     params: std.mergePatch(commonButtons.spaceButton.params, {
-      swipeUp: { action: { symbol: '0' } },
+      #swipeUp: { action: { symbol: '0' } },
+      swipeUp: { text: '0' },
+      longPress: [
+        { action: { character: '0' }, selected: true },
+      ],
     }),
   },
 
