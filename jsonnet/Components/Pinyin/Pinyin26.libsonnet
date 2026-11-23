@@ -167,7 +167,7 @@ local newKeyLayout(isDark=false, isPortrait=true, keyboardType=KeyboardType.Chin
         size:
           { width: '168.75/1125' },
         bounds:
-          { width: '151/168.75', alignment: 'left' },
+          { width: '168.75/168.75', alignment: 'left' },
       }
     )
     + utils.processButtonParams(isAlphabetic, commonButtons.shiftButton.params)
@@ -186,7 +186,7 @@ local newKeyLayout(isDark=false, isPortrait=true, keyboardType=KeyboardType.Chin
         size:
           { width: '168.75/1125' },
         bounds:
-          { width: '151/168.75', alignment: 'right' },
+          { width: '168.75/168.75', alignment: 'right' },
       }
     )
     + utils.processButtonParams(isAlphabetic, commonButtons.backspaceButton.params),
@@ -253,7 +253,7 @@ local newKeyLayout(isDark=false, isPortrait=true, keyboardType=KeyboardType.Chin
     commonButtons.enterButton.name,
     isDark,
     {
-      size: { width: '250/1125' },
+      size: { width: '225/1125' },
     } + utils.processButtonParams(isAlphabetic, commonButtons.enterButton.params)
   )
 ;
