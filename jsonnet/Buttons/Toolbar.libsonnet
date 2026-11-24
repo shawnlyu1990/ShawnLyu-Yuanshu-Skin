@@ -402,7 +402,7 @@ local settings = import '../Settings.libsonnet';
 
   candidateStyle: {
     highlightBackgroundColor: colors.candidateHighlightColor,
-    preferredBackgroundColor: colors.candidateHighlightColor,
+    preferredBackgroundColor: colors.colorButtonBackgroundColor,
     preferredIndexColor: colors.candidatePreferredForegroundColor,
     preferredTextColor: colors.candidatePreferredForegroundColor,
     preferredCommentColor: colors.candidatePreferredForegroundColor,
