@@ -14,6 +14,7 @@ local newCandidateStyle(param={}, isDark=false) =
       'indexFontWeight',
       'textFontSize',
       'textFontWeight',
+      'preferredTextFontWeight',
       'commentFontSize',
       'commentFontWeight',
     ]

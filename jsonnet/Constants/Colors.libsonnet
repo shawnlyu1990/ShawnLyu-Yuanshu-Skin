@@ -172,6 +172,7 @@ local toolbarButtonHighlightedForegroundColor = standardButtonForegroundColor;
 
 // 候选字亮候选字背景颜色
 local candidateHighlightColor = standardButtonBackgroundColor;
+local candidatePreferredForegroundColor = if settings.accentColor == 0 then standardButtonForegroundColor else colorButtonBackgroundColor;
 local candidateForegroundColor = standardButtonForegroundColor;
 
 // 候选字分隔线颜色
@@ -208,6 +209,7 @@ local candidateSeparatorColor = separatorColor;
   toolbarButtonForegroundColor: toolbarButtonForegroundColor,
   toolbarButtonHighlightedForegroundColor: toolbarButtonHighlightedForegroundColor,
   candidateHighlightColor: candidateHighlightColor,
+  candidatePreferredForegroundColor: candidatePreferredForegroundColor,
   candidateForegroundColor: candidateForegroundColor,
   candidateSeparatorColor: candidateSeparatorColor,
 }
